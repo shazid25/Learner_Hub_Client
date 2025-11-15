@@ -1,13 +1,44 @@
 import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import Home from './components/pages/studentPage/Home'
+import CoursesList from './components/pages/studentPage/CoursesList'
+import CourseDetails from './components/pages/studentPage/CourseDetails'
+import MyEnrollments from './components/pages/studentPage/MyEnrollments'
+import Player from './components/pages/studentPage/Player'
+import Loading from './components/student/Loading'
+// import Educator from './components/pages/educatorPage/Educator'
+import Dashboard from './components/pages/educatorPage/Dashboard'
+import AddCourse from './components/pages/educatorPage/AddCourse'
+import MyCourses from './components/pages/educatorPage/MyCourses'
+import StudentsEnrolled from './components/pages/educatorPage/StudentsEnrolled'
+import Educator from './components/pages/educatorPage/Educator'
 
 const App = () => {
   return (
     <div>
-      <h1 className="text-3xl font-bold underline">
-        Hello, Vite with React and Tailwind CSS!
-      </h1>
-          </div>
+      <Routes>
+
+        {/* student routes */}
+        <Route path='/' element={<Home />} />
+        <Route path='/course-list' element={<CoursesList />} />
+        <Route path='/course-list/:input' element={<CoursesList />} />
+        <Route path='/course/:id' element={<CourseDetails />} />
+        <Route path='/my-enrollments' element={<MyEnrollments />} />
+        <Route path='/player/:courseId' element={<Player />} />
+        <Route path='/loading/:path' element={<Loading />} />
+
+        {/* educator parent route */}
+
+        <Route path='/educator' element={<Educator />}>
+          <Route path='educator' element={< Dashboard />} />
+          <Route path='add-courses' element={<AddCourse />} />
+          <Route path='my-courses' element={<MyCourses />} />
+          <Route path='students-enrolled' element={<StudentsEnrolled />} />
+        </Route>
+
+      </Routes>
+    </div>
   )
 }
 
-export default App
+export default App;

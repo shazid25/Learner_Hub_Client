@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CousersesList = () => {
+const CoursesList = () => {
   return (
     <div>
       <h2>CousersesList</h2>
@@ -8,4 +8,4 @@ const CousersesList = () => {
   )
 }
 
-export default CousersesList
+export default CoursesList
