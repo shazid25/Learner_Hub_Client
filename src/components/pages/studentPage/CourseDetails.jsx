@@ -121,9 +121,23 @@ const CourseDetails = () => {
 
         <div className='pt-8 text-gray-800'>
           <h2 className='text-xl font-semibold'>Course Structure</h2>
-          {/* You can use other functions here if needed */}
-          <p>Course Duration: {calculateCourseDuration(courseData)}</p>
-          <p>Total Lectures: {calculateNoOfLectures(courseData)}</p>
+          
+        </div>
+
+        <div className='pt-5'>
+          {courseData.courseContent.map((chapter, index) =>
+            <div key={index} className='border border-gray-300 bg-white mb-2 rounded'>
+              <div>
+                <div className='flex items-center justify-between px-4 py-3 cursor-pointer select-none'>
+                  <img src={assets.down_arrow_icon} alt='arrow icon' />
+                  <p>{chapter.chapterTitle}</p>
+                </div>
+                <p>{chapter.chapterContent.length} Lectures - {calculateChapterTime(chapter)}
+
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
       </div>
