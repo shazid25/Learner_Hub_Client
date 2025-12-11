@@ -1,3 +1,5 @@
+
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -13,15 +15,19 @@ export default {
         'home-heading-large': ['48px', { lineHeight: '56px' }],
         'default': ['15px', { lineHeight: '21px' }]
       },
-
-        gridTemplateColumns: {
+      gridTemplateColumns: {
         'auto': 'repeat(auto-fit, minmax(200px, 1fr))'
       },
-
       spacing: {
-        'section-height' : '500px',
+        'section-height': '500px',
+      },
+      maxWidth: {
+        'course-card': '424px'
+      },
+      boxShadow: {
+        'custom-card': '0px 4px 15px 2px rgba(0, 0, 0, 0.1)'
       }
-    },
+    }
   },
   plugins: [],
 }
