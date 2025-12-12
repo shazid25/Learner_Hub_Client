@@ -4,6 +4,9 @@ import { AppContext } from '../../context/AppContext';
 import Loading from '../../student/Loading';
 import { assets } from '../../../assets/assets';
 import humanizeDuration from 'humanize-duration';
+import Footer from '../../student/Footer';
+import YouTube from 'react-youtube';
+
 
 const CourseDetails = () => {
 
@@ -11,6 +14,7 @@ const CourseDetails = () => {
   const [courseData, setCourseData] = useState(null);
   const [openSections, setOpenSections] = useState({});
   const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
+  const [playerData, setPlayerData] = useState(null);
 
 
   const { allCourses, calculateRating, calculateChapterTime, calculateCourseDuration, calculateNoOfLectures, currency } = useContext(AppContext);
@@ -49,7 +53,7 @@ const CourseDetails = () => {
           {/* Rating & review */}
 
           <div className='flex items-center pt-3 pb-1 text-sm space-x-2'>
-            <p>{calculateRating(courseData)}</p> {/* Fixed: caculateRating → calculateRating */}
+            <p>{calculateRating(courseData)}</p>
             <div className='flex'>
               {[...Array(5)].map((_, i) => (<img key={i} src={i < Math.floor(calculateRating(courseData)) ? assets.star : assets.star_blank} alt=''
                 className='w-3.5 h-3.5' />
@@ -93,7 +97,11 @@ const CourseDetails = () => {
                         <div className='flex items-center justify-between w-full text-gray-800 text-xs md:text-default'>
                           <p>{lecture.lectureTitle}</p>
                           <div className='flex gap-2 '>
-                            {lecture.isPreviewFree && <p className='text-blue-500 cursor-pointer'>Preview</p>}
+                            {lecture.isPreviewFree && <p
+                              onClick={() => setPlayerData({
+                                videoId: lecture.lectureUrl.split('/').pop()
+                              })}
+                              className='text-blue-500 cursor-pointer'>Preview</p>}
                             <p>{humanizeDuration(lecture.lectureDuration * 60 * 1000, { units: ['h', 'm'] })}</p>
                           </div>
                         </div>
@@ -106,14 +114,7 @@ const CourseDetails = () => {
               </div>
             )}
           </div>
-          {/* 
-        <div className='py-20 text-sm md:text-default'>
-<h3 className='text-xl font-semibold text-gray-800'>Course Description</h3>
-<p className='pt-3 '>
-  dangerouslySetInnerHTML= {{__html: courseData.courseDescription}}
-</p>
 
-        </div> */}
           <div className='py-6 md:py-8'>
             <h3 className='text-xl font-semibold text-gray-800'>Course Description</h3>
             <div
@@ -122,21 +123,37 @@ const CourseDetails = () => {
             />
           </div>
 
-          <div className='pt-8 text-gray-800'>
-            <h2 className='text-xl font-semibold'>Course Structure</h2>
 
-          </div>
         </div>
+
         {/* right column */}
         <div className='max-w-md z-10 shadow-lg rounded-lg overflow-hidden bg-white min-w-[300px] sm:min-w-[420px]   rounded-3xl'>
-          <img src={courseData.courseThumbnail} alt="" />
+
+          {
+            playerData ?
+              <YouTube videoId={playerData.videoId} opts={{
+                playerVars: {
+                  autoplay: 1
+                }
+              }} iframeClassName='w-full aspect-video' />
+
+              :  <img src={courseData.courseThumbnail} alt="" />
+          }
+         
           <div className='pt-5 px-3 py-3'>
             <div>
               <img className='w-3.5' src={assets.time_left_clock_icon} alt="time left clock icon" />
               <p className='text-red-500'>
                 <span className='font-medium'>5 days</span> left at this price!
               </p>
+
+                      <img className='w-3.5' src={assets.time_left_clock_icon} alt="time left clock icon" />
+
             </div>
+
+
+
+
 
             <div className='flex gap-3 items-center pt-2'>
 
@@ -190,6 +207,7 @@ const CourseDetails = () => {
 
 
       </div>
+      <Footer></Footer>
     </>
   ) : <Loading />
 }

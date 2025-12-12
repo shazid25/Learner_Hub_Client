@@ -1,11 +1,65 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AppContext } from '../../context/AppContext';
 
 const MyEnrollments = () => {
-  return (
-    <div>
-            <h2>MyEnrollment</h2>
 
-    </div>
+  const { enrolledCourses, calculateCourseDuration } = useContext(AppContext);
+
+  return (
+    <>
+      <div className='md:px-36 px-8 pt-10'>
+        <h1 className='text-2xl font-semibold'>My Enrollments</h1>
+
+        <table className='md:table-auto table-fixed w-full overflow-hidden border mt-10'>
+          <thead className='text-gray-900 border-b border-gray-500/20 text-sm text-left max-sm:hidden'>
+            <tr>
+              <th className='px-4 py-3 font-semibold truncate'>Course</th>
+              <th className='px-4 py-3 font-semibold truncate'>Duration</th>
+              <th className='px-4 py-3 font-semibold truncate'>Completed</th>
+              <th className='px-4 py-3 font-semibold truncate'>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {enrolledCourses.map((course, index) => (
+              <tr key={index} className="border-b">
+
+                {/* Course Column */}
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={course.courseThumbnail}
+                      alt={course.courseTitle}
+                      className="w-14 sm:w-24 md:w-28 rounded-md object-cover"
+                    />
+                    <p className="font-medium text-gray-800">
+                      {course.courseTitle}
+                    </p>
+                  </div>
+                </td>
+
+                {/* Duration */}
+                <td className="px-4 py-3 text-sm text-gray-700">
+                  {calculateCourseDuration(course)}
+                </td>
+
+                {/* Completed */}
+                <td className="px-4 py-3 text-sm text-gray-700">
+                  4/10 <span>Lectures</span>
+                </td>
+
+                {/* Status */}
+                <td className="px-4 py-3 text-sm font-medium text-green-600">
+                  On Going
+                </td>
+
+              </tr>
+            ))}
+          </tbody>
+
+        </table>
+      </div>
+    </>
   )
 }
 
