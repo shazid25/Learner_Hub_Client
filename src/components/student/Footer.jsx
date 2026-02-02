@@ -10,7 +10,7 @@ const Footer = () => {
         <div>
           <div className="flex items-center gap-3">
             <img src={assets.logo} alt="Edemy logo" className="h-8" />
-            <span className="text-white text-lg font-semibold">Edemy</span>
+            <span className="text-white text-lg font-semibold"></span>
           </div>
 
           <p className="mt-4 text-sm leading-relaxed">

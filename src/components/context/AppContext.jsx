@@ -2,21 +2,40 @@ import { createContext, useEffect, useState } from "react";
 import { dummyCourses } from "../../assets/assets";
 import { useNavigate } from "react-router-dom";
 import humanizeDuration from "humanize-duration";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
+
   const currency = import.meta.env.VITE_CURRENCY || "$";
   const navigate = useNavigate();
+
+  const { getToken } = useAuth();
+  const { user } = useUser();
 
   const [allCourses, setAllCourses] = useState([]);
   const [isEducator, setIsEducator] = useState(true);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
 
-  //Fetch All Courses
-  const fetchAllCourses = async () => {
-    setAllCourses(dummyCourses || []);
-  };
+ // Fetch All Courses
+const fetchAllCourses = async () => {
+    try {
+        const {data} = await axios.get(backendUrl + '/api/course/all');
+
+        if(data.success){
+            setAllCourses(data.courses)
+        }else{
+            toast.error(data.message)
+        }
+
+    } catch (error) {
+        toast.error(error.message)
+    }
+}
 
   //function to calculate avg rating
   const calculateRating = (course) => {
@@ -74,6 +93,16 @@ export const AppContextProvider = (props) => {
     fetchAllCourses();
     fetchUserEnrolledCourses();
   }, []);
+
+  const logToken = async () => {
+    console.log(await getToken());
+  }
+
+  useEffect(() => {
+  if (user){
+     logToken();
+  }
+  },[user])
 
   const value = {
     currency,
